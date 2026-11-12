@@ -44,7 +44,7 @@ button small{display:block;font-size:11px;opacity:.75}
 #joyBase{width:132px;height:132px;border-radius:50%;position:relative;background:rgba(235,250,255,.22);border:3px solid rgba(255,255,255,.7);box-shadow:0 4px 18px #082c5860;pointer-events:auto;touch-action:none;user-select:none}
 #joyKnob{position:absolute;width:58px;height:58px;left:34px;top:34px;border-radius:50%;background:linear-gradient(145deg,#fff6c9,#ffc967);border:3px solid white;box-shadow:0 3px 12px #07345c80;pointer-events:none}
 #actionButtons{display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
-.actionButton{border-radius:50%;width:78px;height:78px;padding:4px;background:rgba(255,255,255,.84);border:3px solid #fff;box-shadow:0 5px 0 rgba(13,57,88,.3);font-weight:900;font-size:13px;touch-action:none;user-select:none}
+.actionButton{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:none;border-radius:50%;width:78px;height:78px;padding:4px;background:rgba(255,255,255,.84);border:3px solid #fff;box-shadow:0 5px 0 rgba(13,57,88,.3);font-weight:900;font-size:13px;touch-action:none;user-select:none}
 #fireButton{background:linear-gradient(145deg,#ff9aa9,#ff637e);color:#fff;font-size:26px}
 
 .actionButton:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(13,57,88,.3)}
@@ -248,7 +248,7 @@ const joy=$('joyBase'),knob=$('joyKnob');let joyPointer=null;
 function joyMove(e){const r=joy.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),lim=r.width*.34,d=Math.hypot(dx,dy)||1,m=Math.min(1,lim/d);tj={x:dx*m/lim,y:dy*m/lim};knob.style.transform='translate('+dx*m+'px,'+dy*m+'px)'}
 function joyEnd(e){if(joyPointer!==e.pointerId)return;joyPointer=null;tj=null;knob.style.transform='translate(0,0)'}
 joy.onpointerdown=e=>{e.preventDefault();e.stopPropagation();joyPointer=e.pointerId;joy.setPointerCapture(e.pointerId);joyMove(e)};joy.onpointermove=e=>{if(e.pointerId===joyPointer)joyMove(e)};joy.onpointerup=joy.onpointercancel=joyEnd;
-const fireButton=$('fireButton');fireButton.onpointerdown=e=>{e.preventDefault();e.stopPropagation();tf=true;fireButton.setPointerCapture(e.pointerId)};fireButton.onpointerup=fireButton.onpointercancel=e=>{e.preventDefault();tf=false};
+const fireButton=$('fireButton');fireButton.addEventListener('touchstart',e=>{e.preventDefault()},{passive:false});fireButton.addEventListener('touchend',e=>{e.preventDefault()},{passive:false});fireButton.onpointerdown=e=>{e.preventDefault();e.stopPropagation();tf=true;fireButton.setPointerCapture(e.pointerId)};fireButton.onpointerup=fireButton.onpointercancel=e=>{e.preventDefault();tf=false};
 setInterval(()=>{if(U.crew)S.c+=U.crew*1.5},1000);
 function loop(n){const dt=Math.min(.05,(n-last)/1000||0);last=n;if(!paused)upd(dt);draw(n);hudT-=dt;if(hudT<=0){hud();hudT=.15}requestAnimationFrame(loop)}
 $('fullscreenBtn').onclick=$('coverFullscreen').onclick=()=>toggleFullscreen();document.addEventListener('fullscreenchange',()=>{const t=document.fullscreenElement?'⛶ ออกจากเต็มจอ':'⛶ เต็มจอ';$('fullscreenBtn').textContent=t;$('coverFullscreen').textContent=t});
