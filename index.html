@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abyss Protectors by Krupoy: ภารกิจพิทักษ์ทะเล</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Mali','Sarabun',system-ui,sans-serif;background:#fdf6e3;color:#4a3f35}
+.wrap{max-width:920px;margin:auto;padding:8px}
+#hud{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;background:#fff;border-radius:14px;padding:6px 12px;font-weight:bold;font-size:14px;box-shadow:0 2px 0 #e8dcc0}
+.ob{display:inline-block;width:90px;height:10px;background:#e8dcc0;border-radius:6px;overflow:hidden;vertical-align:middle}
+.ob i{display:block;height:100%;background:#7fd0e6}
+#st{position:relative;margin-top:8px;border-radius:18px;overflow:hidden;background:#000;touch-action:none}
+canvas{display:block;width:100%;height:auto}
+#pn{position:absolute;inset:0;background:rgba(253,246,227,.97);overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+h3{margin:0}
+.card{background:#fff;border-radius:14px;padding:8px 10px;box-shadow:0 2px 0 #e8dcc0}
+.big{font-size:46px;text-align:center}.big.itemBig{height:96px;margin:2px 0}.itemSprite{display:inline-block;background-image:url("assets/Polymer-Trash-01.png");background-size:400% 400%;background-repeat:no-repeat;image-rendering:pixelated;vertical-align:middle}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+button{border:0;border-radius:12px;padding:8px 6px;font:inherit;font-size:13px;background:#d8f0e4;box-shadow:0 3px 0 #b6d8c6;cursor:pointer;color:#4a3f35}
+button:disabled{opacity:.45}
+button small{display:block;font-size:11px;opacity:.75}
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.shop button{background:#ffe8b8;box-shadow:0 3px 0 #e6c985}
+.go{background:#ffb6c8!important;box-shadow:0 3px 0 #e08ea4!important;font-size:16px;font-weight:bold;padding:10px}
+.ok{color:#2e8b57}.no{color:#c0504d}
+#fb{position:absolute;right:10px;bottom:10px;width:64px;height:64px;border-radius:50%;font-size:26px;opacity:.7;display:none}
+@media(pointer:coarse){#fb{display:block}}
+.hint{font-size:12px;opacity:.8}
+.shop{font-size:12px}
+@media(max-width:560px){.shop{grid-template-columns:1fr 1fr}}
+/* หน้าเปิดเกม */
+#cover{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;overflow:auto;padding:18px;background:linear-gradient(180deg,rgba(3,29,58,.04),rgba(7,31,68,.16)),url("assets/Abyss-Cover-Art.png") center/cover;color:#fff;text-align:center}
+.coverbox{width:min(900px,100%);padding:14px 20px;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}.coverbox>div,.coverbox .subtitle,.coverbox .namefield{text-shadow:0 2px 6px #062747}
+.kicker{font-size:13px;letter-spacing:3px;color:#a5efff;font-weight:800}.logo{margin:4px 0 0;font-size:clamp(27px,6vw,52px);line-height:1.05;color:#fff3b0;text-shadow:0 4px 0 #176a91,0 7px 18px #02294d}.logo .byTag{display:inline-block;font-size:.42em;letter-spacing:0;text-transform:none;vertical-align:middle;color:#d8f7ff;text-shadow:0 3px 0 #176a91,0 5px 12px #02294d}.subtitle{margin:8px 0 14px;color:#e5faff;font-size:14px}.developerCredit{font-size:13px;color:#fff0aa;letter-spacing:.3px;margin-top:4px;text-shadow:0 2px 6px #062747}
+.charrow{display:flex;justify-content:center;gap:10px;margin:12px auto}.charpick{min-width:112px;padding:10px 12px;border:2px solid #ffffff55;background:#164b68;color:#fff;box-shadow:0 4px 12px rgba(2,25,48,.35);border-radius:17px;font-size:14px}.charpick .face{display:block;width:96px;height:110px;margin:0 auto 4px;font-size:0;color:transparent;background-image:url("assets/Abyss-Characters-Pixel.png");background-repeat:no-repeat;background-size:200% 200%;image-rendering:pixelated}.charpick[data-character="0"] .face{background-position:0 0}.charpick[data-character="1"] .face{background-position:100% 0}.charpick[data-character="2"] .face{background-position:0 100%}.charpick.active{border-color:#ffe47c;background:#17647b;box-shadow:0 0 0 3px #ffe47c55,0 5px 14px rgba(2,25,48,.4)}.namefield{display:block;margin:12px auto 14px;max-width:330px;text-align:left;font-size:13px;color:#d9f7ff}.namefield input{display:block;width:100%;margin-top:5px;border:2px solid #99eaff;border-radius:12px;padding:10px 12px;font:inherit;color:#193b57;background:#f3fcff;outline:none}.coveractions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}.startgame{background:#ffd968!important;color:#3e3b35!important;box-shadow:0 4px 0 #d49342!important;font-size:18px;font-weight:900;padding:12px 24px}.soundbtn{background:#164b68;color:#fff;border:1px solid #b8eaff;box-shadow:0 4px 12px rgba(2,25,48,.35)}.creditline{font-size:11px;color:#c6f4ff;margin-top:11px}
+#soundbar{position:absolute;z-index:2;top:8px;right:8px;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:92%}#soundbar button{padding:6px 9px;background:#f5fbff;font-size:12px;border:1px solid #24617b;box-shadow:0 3px 10px rgba(2,25,48,.3)}
+#pn{display:none}
+.finish{text-align:center;border:2px solid #f1c94d;background:linear-gradient(135deg,#fff9d9,#e6fbff)}.finish h2{margin:2px 0;color:#18567d}.finish .finishActions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}.finish .finishActions button{font-weight:800;background:#d6f2df}.finish .finishActions .reportBtn{background:#ffd968;box-shadow:0 3px 0 #d49342}
+@media(max-width:560px){#cover{padding:8px}.coverbox{padding:15px 10px}.charrow{gap:5px}.charpick{min-width:0;flex:1;padding:8px 4px;font-size:12px}.charpick .face{width:72px;height:82px;font-size:0}.logo .byTag{display:block;font-size:.42em;margin-top:3px}}
+#touchControls{position:absolute;inset:0;z-index:4;display:none;align-items:flex-end;justify-content:space-between;padding:18px 22px;pointer-events:none;touch-action:none}
+#joyBase{width:132px;height:132px;border-radius:50%;position:relative;background:rgba(235,250,255,.22);border:3px solid rgba(255,255,255,.7);box-shadow:0 4px 18px #082c5860;pointer-events:auto;touch-action:none;user-select:none}
+#joyKnob{position:absolute;width:58px;height:58px;left:34px;top:34px;border-radius:50%;background:linear-gradient(145deg,#fff6c9,#ffc967);border:3px solid white;box-shadow:0 3px 12px #07345c80;pointer-events:none}
+#actionButtons{display:flex;flex-direction:column;align-items:center;gap:12px;pointer-events:auto}
+.actionButton{border-radius:50%;width:78px;height:78px;padding:4px;background:rgba(255,255,255,.84);border:3px solid #fff;box-shadow:0 5px 0 rgba(13,57,88,.3);font-weight:900;font-size:13px;touch-action:none;user-select:none}
+#fireButton{background:linear-gradient(145deg,#ff9aa9,#ff637e);color:#fff;font-size:26px}
+
+.actionButton:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(13,57,88,.3)}
+@media(max-width:560px){#touchControls{padding:12px}#joyBase{width:118px;height:118px}#joyKnob{left:29px;top:29px;width:54px;height:54px}.actionButton{width:70px;height:70px}}
+</style></head><body><div class="wrap">
+<div id="hud"></div>
+<div id="st"><canvas id="c"></canvas>
+<div id="soundbar"><button id="homeBtn" title="กลับหน้าแรก">🏠 หน้าแรก</button><button id="musicToggle" title="เปิด/ปิดเพลง">🎵 เพลง: เปิด</button><button id="sfxToggle" title="เปิด/ปิดเอฟเฟกต์">🔊 เสียง: เปิด</button></div>
+<div id="cover"><div class="coverbox"><div class="kicker">OCEAN CLEANUP ADVENTURE</div><h1 class="logo">ABYSS PROTECTORS <span class="byTag">by Krupoy</span></h1><div style="font-size:20px;font-weight:800">ภารกิจพิทักษ์ทะเล</div><p class="subtitle">ดำดิ่ง เก็บขยะ แยกพอลิเมอร์ แล้วช่วยให้ทะเลกลับมาสดใส</p><div>เลือกนักดำน้ำของคุณ</div><div class="charrow"><button class="charpick active" data-character="0"><span class="face" aria-hidden="true"></span>น้องอควา</button><button class="charpick" data-character="1"><span class="face" aria-hidden="true"></span>น้องไข่มุก</button><button class="charpick" data-character="2"><span class="face" aria-hidden="true"></span>น้องหมึก</button></div><label class="namefield">ชื่อนักดำน้ำ<input id="playerName" maxlength="16" placeholder="พิมพ์ชื่อของคุณ" autocomplete="nickname"></label><div class="coveractions"><button class="startgame" id="startGame">เริ่มภารกิจดำน้ำ　▶</button><button class="soundbtn" id="coverMusic">🎵 เพลง: เปิด</button><button class="soundbtn" id="coverSfx">🔊 เอฟเฟกต์: เปิด</button></div><div class="creditline">ใช้ WASD / ปุ่มลูกศรเพื่อว่ายน้ำ · เก็บขยะแล้วกลับขึ้นผิวน้ำเพื่อแยกประเภท</div><div class="developerCredit">พัฒนาโดย ครูภัทรกันย์ กิติยศ</div></div></div>
+<div id="touchControls"><div id="joyBase" aria-label="จอยสติกควบคุมทิศทาง"><div id="joyKnob"></div></div><div id="actionButtons"><button class="actionButton" id="fireButton" aria-label="ยิง">🔫<br><small>ยิง</small></button></div></div><div id="pn"></div></div>
+<div class="hint" style="margin-top:6px">⌨️ WASD/ลูกศร = ว่าย · คลิกหรือ Space = ยิง · 📱 แตะซ้ายค้าง = ว่าย, แตะขวา = ยิง · ว่ายขึ้นผิวน้ำเพื่อแยกขยะและซื้อของ</div>
+</div>
+<script>
+const $=i=>document.getElementById(i),cv=$('c'),g=cv.getContext('2d'),W=900,H=540,WW=2800,WH=1900,SURF=70;
+const bgImg=new Image();bgImg.src='assets/Abyss-Underwater-Background.png';
+const swimSheet=new Image();swimSheet.src='assets/Abyss-Swim-Characters.png';
+const lifeSheet=new Image();lifeSheet.src='assets/Abyss-Sea-Creatures.png';
+const pirateSprite=new Image();pirateSprite.src='assets/Abyss-Pirate-Swim.png';
+const sharkSprite=new Image();sharkSprite.src='assets/Abyss-Shark.png';
+const itemSheetFiles=['assets/Polymer-Trash-01.png','assets/Polymer-Trash-02.png','assets/Polymer-Trash-03.png'];const itemSheets=itemSheetFiles.map(src=>{const im=new Image();im.src=src;return im});
+let diverIndex=0,playerName='นักดำน้ำ',hasStarted=false,gameOver=false;
+let musicOn=true,sfxOn=true,audioCtx=null,musicTimer=null,musicStep=0;
+function audio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function tone(freq,duration=.16,type='sine',volume=.045,when=0){if(!audioCtx)return;const o=audioCtx.createOscillator(),v=audioCtx.createGain(),t=audioCtx.currentTime+when;o.type=type;o.frequency.setValueAtTime(freq,t);v.gain.setValueAtTime(.0001,t);v.gain.exponentialRampToValueAtTime(volume,t+.025);v.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(v);v.connect(audioCtx.destination);o.start(t);o.stop(t+duration+.03)}
+function sfx(kind){if(!sfxOn)return;audio();({pickup:()=>{tone(660,.1,'sine',.06);tone(880,.18,'sine',.04,.08)},sort:()=>{tone(523,.12);tone(659,.12,'sine',.045,.1);tone(784,.2,'sine',.04,.2)},shoot:()=>tone(210,.09,'triangle',.025),hit:()=>tone(125,.25,'sawtooth',.035),start:()=>{tone(392,.15);tone(523,.18,'sine',.05,.12);tone(659,.25,'sine',.05,.25)}}[kind]||(()=>{}))()}
+const melody=[392,523,659,523,440,587,698,587,349,440,523,440,330,392,494,392];
+function startMusic(){if(!musicOn||musicTimer)return;audio();musicTimer=setInterval(()=>{if(musicOn){tone(melody[musicStep%melody.length],.55,'sine',.012);if(musicStep%4===0)tone(melody[musicStep%melody.length]/2,.8,'triangle',.009);musicStep++}},430)}
+function stopMusic(){clearInterval(musicTimer);musicTimer=null}
+function toggleMusic(){musicOn=!musicOn;if(musicOn)startMusic();else stopMusic();syncSoundButtons()}
+function toggleSfx(){sfxOn=!sfxOn;syncSoundButtons()}
+function syncSoundButtons(){$('musicToggle').textContent='🎵 เพลง: '+(musicOn?'เปิด':'ปิด');$('sfxToggle').textContent='🔊 เสียง: '+(sfxOn?'เปิด':'ปิด');$('coverMusic').textContent='🎵 เพลง: '+(musicOn?'เปิด':'ปิด');$('coverSfx').textContent='🔊 เอฟเฟกต์: '+(sfxOn?'เปิด':'ปิด')}
+cv.width=W;cv.height=H;
+const B=[["🌿 ธรรมชาติ","ย่อยสลายได้ (เซลลูโลส โปรตีน ยางพารา)"],["♻️ เทอร์มอพลาสติก","ความร้อนทำให้อ่อน หลอมใหม่ได้"],["🔥 เทอร์มอเซตติง","แข็งถาวร หลอมใหม่ไม่ได้"],["🧵 เส้นใย/ยางสังเคราะห์","ไนลอน โพลีเอสเตอร์ ยางสังเคราะห์"]];
+const I=[
+["📄","กระดาษ",0,"ทำจากเซลลูโลสของพืช เป็นพอลิเมอร์ธรรมชาติ"],
+["👕","เสื้อฝ้าย",0,"ฝ้ายคือเซลลูโลสจากต้นฝ้าย เส้นใยธรรมชาติ"],
+["🎈","ลูกโป่งยางพารา",0,"ยางพาราคือพอลิไอโซพรีน พอลิเมอร์ธรรมชาติ"],
+["🧣","ผ้าขนสัตว์",0,"ขนสัตว์และไหมเป็นโปรตีน พอลิเมอร์ธรรมชาติ"],
+["🪢","เชือกป่าน",0,"ป่านเป็นเซลลูโลสจากพืช เส้นใยธรรมชาติ"],
+["🍼","ขวดน้ำ PET",1,"PET เป็นเทอร์มอพลาสติก อ่อนตัวเมื่อร้อนแล้วขึ้นรูปใหม่ได้"],
+["🛍️","ถุงพลาสติก PE",1,"พอลิเอทิลีนอ่อนตัวเมื่อร้อน หลอมรีไซเคิลได้"],
+["🥡","กล่องโฟม PS",1,"พอลิสไตรีนเป็นเทอร์มอพลาสติก"],
+["🪣","ถัง HDPE",1,"HDPE พอลิเอทิลีนความหนาแน่นสูง เป็นเทอร์มอพลาสติก"],
+["🚰","ท่อ PVC",1,"พอลิไวนิลคลอไรด์ เป็นเทอร์มอพลาสติก"],
+["🍽️","จานเมลามีน",2,"เมลามีนเป็นเทอร์มอเซตติง เมื่อร้อนไม่อ่อนตัว"],
+["🔌","ปลั๊กเบกาไลต์",2,"เบกาไลต์เป็นเทอร์มอเซตติง หลอมใหม่ไม่ได้"],
+["🍳","ด้ามกระทะ",2,"ด้ามกระทะมักเป็นเทอร์มอเซตติง ทนความร้อนไม่หลอม"],
+["🛶","เรือไฟเบอร์กลาส",2,"เรซินพอลิเอสเตอร์ในไฟเบอร์กลาสเป็นเทอร์มอเซตติง"],
+["🎣","อวนไนลอน",3,"ไนลอนเป็นเส้นใยสังเคราะห์ ค้างในทะเลได้นานมาก"],
+["👚","เสื้อโพลีเอสเตอร์",3,"โพลีเอสเตอร์เป็นเส้นใยสังเคราะห์"],
+["🛞","ยางรถ",3,"ยางรถใช้ยางสังเคราะห์ เช่น SBR เป็นหลัก"],
+["🧤","ถุงมือไนไตรล์",3,"ไนไตรล์เป็นยางสังเคราะห์"],
+["🧦","ถุงน่องไนลอน",3,"ไนลอนเป็นเส้นใยสังเคราะห์"],
+["🥢","ตะเกียบไม้",0,"ไม้มีเซลลูโลส ซึ่งเป็นพอลิเมอร์ธรรมชาติจากพืช"],
+["🧵","ผ้าไหม",0,"เส้นไหมประกอบด้วยโปรตีน เป็นเส้นใยพอลิเมอร์ธรรมชาติ"],
+["🪢","กระสอบป่าน",0,"เส้นใยป่านมีเซลลูโลส ใช้ทำเชือกและกระสอบ"],
+["🧤","ถุงมือยางพารา",0,"ผลิตจากยางธรรมชาติ มีความยืดหยุ่น"],
+["🥡","ถุงใส่อาหารร้อน PP",1,"พอลิโพรพิลีน (PP) ใช้ทำถุงใส่อาหารร้อน ทนความร้อนได้ดีกว่า PE ตามตัวอย่าง สสวท."],
+["🧊","ถุงใส่อาหารเย็น LDPE",1,"พอลิเอทิลีนความหนาแน่นต่ำ (LDPE) นิยมทำถุงใส่ของอุณหภูมิปกติหรือของเย็น"],
+["🧴","ขวดแชมพู HDPE",1,"HDPE เหนียวและทนสารเคมี ใช้ทำบรรจุภัณฑ์ เช่น ขวดแชมพู"],
+["🧢","ฝาขวด PP",1,"พอลิโพรพิลีนเป็นเทอร์มอพลาสติก พบได้ในฝาขวดและภาชนะหลายชนิด"],
+["🥤","หลอดพลาสติก PP",1,"หลอดหลายชนิดทำจากพอลิโพรพิลีน ซึ่งหลอมขึ้นรูปได้"],
+["🍱","กล่องอาหาร PP",1,"กล่องอาหารบางชนิดทำจาก PP ซึ่งเป็นเทอร์มอพลาสติก"],
+["🥄","ช้อนพลาสติก PS",1,"พอลิสไตรีน (PS) เป็นเทอร์มอพลาสติก ใช้ทำของใช้แบบใช้ครั้งเดียวบางชนิด"],
+["🔍","แผ่นอะคริลิก PMMA",1,"อะคริลิกเป็นเทอร์มอพลาสติก เนื้อใส ใช้ทำแผ่นหรือชิ้นงานโปร่งใส"],
+["🥡","ถาดอาหาร PET",1,"PET เป็นเทอร์มอพลาสติก ใช้ทำถาดอาหารแบบใสที่ขึ้นรูปได้"],
+["🧩","กาวอีพ็อกซี",2,"เรซินอีพ็อกซีเมื่อแข็งตัวเป็นโครงข่ายและไม่หลอมกลับเป็นของเหลว"],
+["🔘","สวิตช์เบกาไลต์",2,"เบกาไลต์เป็นพลาสติกเทอร์มอเซต ทนความร้อนและคงรูป"],
+["🧽","โฟมโพลียูรีเทน",2,"โฟม PU ชนิดแข็งจำนวนมากเป็นเทอร์มอเซต ใช้เป็นฉนวนหรือวัสดุกันกระแทก"],
+["🧶","เสื้อไหมพรมอะคริลิก",3,"อะคริลิกเป็นเส้นใยสังเคราะห์ ใช้ทำเสื้อผ้าและไหมพรม"],
+["🪥","ขนแปรงไนลอน",3,"ไนลอนเป็นพอลิเมอร์สังเคราะห์ ใช้ทำเส้นใยและขนแปรง"],
+["🩱","ผ้ายืดสแปนเด็กซ์",3,"สแปนเด็กซ์เป็นเส้นใยสังเคราะห์ที่ยืดหยุ่น ใช้ผสมในผ้ายืด"],
+["🧽","ผ้าไมโครไฟเบอร์",3,"ผ้าไมโครไฟเบอร์มักทำจากเส้นใยสังเคราะห์ เช่น พอลิเอสเตอร์หรือไนลอน"],
+["📏","ไม้บรรทัด PS",1,"พอลิสไตรีน (PS) เป็นเทอร์มอพลาสติก ใช้ทำเครื่องเขียนบางชนิด"]];
+const UP={gun:["🔫 ปืนน้ำแรงดัน","ยิงเร็ว แรงขึ้น",40],o2:["🫧 ถังออกซิเจน","อยู่ใต้น้ำนานขึ้น",30],bag:["🎒 ถุงเก็บขยะ","จุเพิ่ม +2",30],fin:["🦶 ตีนกบ","ว่ายเร็วขึ้น",35],armor:["🛡️ ชุดดำน้ำเกราะ","เลือด +1",50],crew:["🤖 หุ่นยนต์ช่วย","ได้เหรียญเองทุกวินาที",80],heart:["❤️ ซื้อหัวใจ +1","เพิ่มหัวใจ 1 ดวง",18]};
+let S={c:0,clean:0,kills:0},U={gun:0,o2:0,bag:0,fin:0,armor:0,crew:0,heart:0},dex=new Set();
+let P,trash=[],pir=[],bul=[],eb=[],part=[],fl=[],paused=true,keys={},mouse=null,md=false,tj=null,tf=false,decor=[],ptimer=3,hudT=0,last=0,msg='',won=false;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),rnd=(a,b)=>a+Math.random()*(b-a),zone=y=>y<600?0:y<1250?1:2,cost=k=>Math.round(UP[k][2]*Math.pow(1.7,U[k]));
+const mo2=()=>60+U.o2*20,mhp=()=>4+U.armor,cap=()=>4+U.bag*2,spd=()=>170+U.fin*25;
+function mk(x,y){const d=I[Math.random()*I.length|0];return{d,x:x??rnd(80,WW-80),y:y??rnd(220,WH-70),ph:rnd(0,6)}}
+for(let i=0;i<45;i++)trash.push(mk());
+for(let i=0;i<70;i++)decor.push({e:Math.random()*4|0,x:rnd(0,WW),y:rnd(150,WH-40),s:rnd(25,43),v:rnd(8,30)});
+P={x:WW/2,y:SURF,vx:0,vy:0,hp:4,o2:60,inv:[],face:1,iv:0,cd:0,surf:0};
+function em(e,x,y,s){g.font=s+'px serif';g.textAlign='center';g.textBaseline='middle';g.fillText(e,x,y)}
+function nearest(){let b=null,bd=650;for(const p of pir){const d=Math.hypot(p.x-P.x,p.y-P.y);if(d<bd){bd=d;b=p}}return b}
+function shoot(){sfx('shoot');const t=nearest();let a;
+ if(md&&mouse)a=Math.atan2(mouse.y-P.y,mouse.x-P.x);else if(t)a=Math.atan2(t.y-P.y,t.x-P.x);else a=P.face>0?0:Math.PI;
+ P.cd=0.5*Math.pow(0.88,U.gun);bul.push({x:P.x,y:P.y,vx:Math.cos(a)*460,vy:Math.sin(a)*460,l:1.1,d:1+U.gun*.5})}
+function die(m){if(gameOver)return;gameOver=true;paused=true;P.hp=0;P.vx=P.vy=0;pir.length=0;eb.length=0;$('touchControls').style.display='none';$('homeBtn').style.display='none';const pn=$('pn');pn.innerHTML='<div class="card finish"><h2>💔 เกมโอเวอร์</h2><p>'+m+' หัวใจหมดแล้ว ต้องเริ่มภารกิจใหม่</p><button class="go" id="restartGame">🔄 เริ่มใหม่</button></div>';pn.style.display='flex';$('restartGame').onclick=restartGame}
+function restartGame(){S.c=0;S.clean=0;S.kills=0;Object.keys(U).forEach(k=>U[k]=0);dex.clear();trash.length=0;for(let i=0;i<45;i++)trash.push(mk());pir.length=0;bul.length=0;eb.length=0;part.length=0;fl.length=0;P={x:WW/2,y:SURF,vx:0,vy:0,hp:mhp(),o2:mo2(),inv:[],face:1,iv:0,cd:0,surf:0};ptimer=3;msg='';won=false;gameOver=false;hasStarted=false;paused=true;keys={};tj=null;tf=false;$('pn').style.display='none';$('touchControls').style.display='none';$('homeBtn').style.display='';$('cover').style.display='flex';$('startGame').textContent='เริ่มภารกิจดำน้ำ　▶';last=performance.now()}
+function upd(dt){
+ let ax=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),ay=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);
+ if(tj){ax=tj.x;ay=tj.y}
+ const l=Math.hypot(ax,ay);if(l>1){ax/=l;ay/=l}
+ const k=Math.min(1,dt*5);P.vx+=(ax*spd()-P.vx)*k;P.vy+=(ay*spd()-P.vy)*k;
+ P.x=clamp(P.x+P.vx*dt,20,WW-20);P.y=clamp(P.y+P.vy*dt,SURF-10,WH-30);
+ if(ax)P.face=ax>0?1:-1;
+ if(l>.1&&Math.random()<.3)part.push({x:P.x,y:P.y-10,l:1.2});
+ if(P.y<SURF+25){if(!P.surf){P.surf=1;sfx('sort');openPanel('')}}else if(P.y>SURF+120)P.surf=0;
+ P.o2-=dt*(1+zone(P.y)*.3);if(P.o2<=0){die('ออกซิเจนหมด');return}
+ P.cd-=dt;P.iv-=dt;if((md||keys[' ']||tf)&&P.cd<=0)shoot();
+ for(let i=trash.length-1;i>=0;i--){const t=trash[i];if(Math.hypot(t.x-P.x,t.y-P.y)<32){if(P.inv.length<cap()){P.inv.push(t.d);sfx('pickup');fl.push({x:t.x,y:t.y,t:1,s:t.d[0]});trash.splice(i,1);trash.push(mk())}else if(!P.full||P.full<performance.now()-1500){P.full=performance.now();fl.push({x:P.x,y:P.y-30,t:1,s:'ถุงเต็ม!'})}}}
+ const z=zone(P.y);ptimer-=dt;
+ if(P.y>260&&ptimer<=0&&pir.length<2+z*2){ptimer=rnd(2.5,4.5);const a=rnd(0,6.28);pir.push({x:clamp(P.x+Math.cos(a)*560,30,WW-30),y:clamp(P.y+Math.sin(a)*560,200,WH-40),hp:2+z*2,m:2+z*2,t:rnd(1,2.5),z,species:Math.random()<.38?'shark':'pirate'})}
+ for(let i=pir.length-1;i>=0;i--){const p=pir[i],dx=P.x-p.x,dy=P.y-p.y,d=Math.hypot(dx,dy)||1,s=55+p.z*20;
+  if(d>230){p.x+=dx/d*s*dt;p.y+=dy/d*s*dt}else{p.x+=-dy/d*s*.6*dt;p.y+=dx/d*s*.6*dt}
+  p.t-=dt;if(p.t<=0&&d<520){p.t=rnd(1.8,2.8)-p.z*.3;eb.push({x:p.x,y:p.y,vx:dx/d*200,vy:dy/d*200,l:3})}
+  if(d>1100)pir.splice(i,1)}
+ for(let i=bul.length-1;i>=0;i--){const b=bul[i];b.x+=b.vx*dt;b.y+=b.vy*dt;b.l-=dt;let hit=b.l<=0;
+  for(let j=pir.length-1;j>=0&&!hit;j--){const p=pir[j];if(Math.hypot(p.x-b.x,p.y-b.y)<26){hit=true;p.hp-=b.d;if(p.hp<=0){S.kills++;const r=10+p.z*8;S.c+=r;fl.push({x:p.x,y:p.y,t:1,s:'+'+r+'🪙'});if(Math.random()<.4)trash.push(mk(p.x,p.y));pir.splice(j,1)}}}
+  if(hit)bul.splice(i,1)}
+ for(let i=eb.length-1;i>=0;i--){const b=eb[i];b.x+=b.vx*dt;b.y+=b.vy*dt;b.l-=dt;
+  if(P.iv<=0&&Math.hypot(b.x-P.x,b.y-P.y)<20){sfx('hit');P.hp--;P.iv=.9;b.l=0;if(P.hp<=0){die('โดนโจรสลัดโจมตี');return}}
+  if(b.l<=0)eb.splice(i,1)}
+ part.forEach(p=>{p.y-=30*dt;p.l-=dt});part=part.filter(p=>p.l>0);fl.forEach(f=>{f.y-=25*dt;f.t-=dt});fl=fl.filter(f=>f.t>0);
+ decor.forEach(d=>{if(d.e===1||d.e===3){d.x+=d.v*dt;if(d.x>WW)d.x=0}})}
+function drawLifeSprite(d,t){if(!lifeSheet.complete||!lifeSheet.naturalWidth)return;const sw=lifeSheet.naturalWidth/2,sh=lifeSheet.naturalHeight/2,col=d.e%2,row=Math.floor(d.e/2),bob=Math.sin(t/440+d.x)*3;g.drawImage(lifeSheet,col*sw,row*sh,sw,sh,d.x-d.s*.65,d.y+ bob-d.s*.48,d.s*1.3,d.s)}
+const ITEM_SPRITE_ORDER=["กระดาษ","เสื้อฝ้าย","ลูกโป่งยางพารา","ผ้าขนสัตว์","เชือกป่าน","ขวดน้ำ PET","ถุงพลาสติก PE","กล่องโฟม PS","ถัง HDPE","ท่อ PVC","จานเมลามีน","ปลั๊กเบกาไลต์","ด้ามกระทะ","เรือไฟเบอร์กลาส","อวนไนลอน","เสื้อโพลีเอสเตอร์","ตะเกียบไม้","ผ้าไหม","กระสอบป่าน","ถุงมือยางพารา","ถุงใส่อาหารร้อน PP","ถุงใส่อาหารเย็น LDPE","ขวดแชมพู HDPE","ฝาขวด PP","หลอดพลาสติก PP","กล่องอาหาร PP","ช้อนพลาสติก PS","แผ่นอะคริลิก PMMA","กาวอีพ็อกซี","สวิตช์เบกาไลต์","โฟมโพลียูรีเทน","เสื้อไหมพรมอะคริลิก","ยางรถ","ถุงมือไนไตรล์","ถุงน่องไนลอน","ไม้บรรทัด PS","ขนแปรงไนลอน","ผ้ายืดสแปนเด็กซ์","ผ้าไมโครไฟเบอร์","ถาดอาหาร PET"];
+function itemSpriteIndex(d){const i=ITEM_SPRITE_ORDER.indexOf(d[1]);return i<0?0:i}
+function spriteMarkup(d,size=88){const i=itemSpriteIndex(d),sheet=Math.floor(i/16),local=i%16,rows=sheet===2?2:4,x=(local%4)*100/3,y=Math.floor(local/4)*100/(rows-1),file=itemSheetFiles[sheet];return '<span class="itemSprite" style="width:'+size+'px;height:'+size+'px;background-image:url(\''+file+'\');background-size:400% '+(rows*100)+'%;background-position:'+x+'% '+y+'%"></span>'}
+function drawTrashSprite(d,x,y){const i=itemSpriteIndex(d),si=Math.floor(i/16),local=i%16,img=itemSheets[si],rows=si===2?2:4;if(!img.complete||!img.naturalWidth){em(d[0],x,y,28);return}const sw=img.naturalWidth/4,sh=img.naturalHeight/rows;g.drawImage(img,(local%4)*sw,Math.floor(local/4)*sh,sw,sh,x-22,y-22,44,44)}
+
+function draw(t){
+ const cx=clamp(P.x-W/2,0,WW-W),cy=clamp(P.y-H/2,0,WH-H);
+ const gr=g.createLinearGradient(0,-cy,0,WH-cy);gr.addColorStop(0,'#a8e6ef');gr.addColorStop(.35,'#6fc1d6');gr.addColorStop(.7,'#3f86b0');gr.addColorStop(1,'#26466e');
+ g.fillStyle=gr;g.fillRect(0,0,W,H);if(bgImg.complete&&bgImg.naturalWidth)g.drawImage(bgImg,0,0,W,H);
+ g.save();g.translate(-cx,-cy);
+ g.fillStyle='#ffeccd';g.fillRect(cx,cy,W,Math.max(0,SURF-cy));
+ g.fillStyle='rgba(255,255,255,.08)';for(let i=0;i<8;i++){g.beginPath();g.moveTo(i*380,SURF);g.lineTo(i*380+90,SURF);g.lineTo(i*380+260,WH*.6);g.lineTo(i*380+120,WH*.6);g.fill()}
+ g.strokeStyle='#fff';g.lineWidth=3;g.beginPath();for(let x=cx;x<=cx+W;x+=12)g.lineTo(x,SURF+Math.sin(x/30+t/500)*4);g.stroke();
+ em('⛵',WW/2,SURF-22,56);
+ g.fillStyle='#ead7a6';g.fillRect(0,WH-26,WW,30);
+ decor.forEach(d=>{if(d.x>cx-50&&d.x<cx+W+50&&d.y>cy-50&&d.y<cy+H+50)drawLifeSprite(d,t)});
+ trash.forEach(a=>{if(a.x>cx-40&&a.x<cx+W+40&&a.y>cy-40&&a.y<cy+H+40){g.fillStyle='rgba(255,255,255,.35)';g.beginPath();g.arc(a.x,a.y,20,0,6.3);g.fill();drawTrashSprite(a.d,a.x,a.y+Math.sin(t/500+a.ph)*4)}});
+ part.forEach(p=>{g.strokeStyle='rgba(255,255,255,.7)';g.beginPath();g.arc(p.x,p.y,3,0,6.3);g.stroke()});
+ pir.forEach(p=>{g.fillStyle='rgba(10,39,78,.38)';g.beginPath();g.arc(p.x,p.y,25,0,6.3);g.fill();const spr=p.species==='shark'?sharkSprite:pirateSprite;if(spr.complete&&spr.naturalWidth)g.drawImage(spr,p.x-38,p.y-28,76,56);else em(p.species==='shark'?'🦈':'🏴‍☠️',p.x,p.y,30);g.fillStyle='#fff';g.fillRect(p.x-18,p.y-35,36,5);g.fillStyle='#ff7a90';g.fillRect(p.x-18,p.y-35,36*p.hp/p.m,5)});
+ bul.forEach(b=>{g.fillStyle='#ffe066';g.beginPath();g.arc(b.x,b.y,6,0,6.3);g.fill()});
+ eb.forEach(b=>{g.fillStyle='#7a4a8c';g.beginPath();g.arc(b.x,b.y,7,0,6.3);g.fill()});
+ g.globalAlpha=P.iv>0&&Math.floor(t/90)%2?.4:1;g.save();g.translate(P.x,P.y+Math.sin(t/150)*2.5);g.rotate(clamp(P.vy/spd(),-1,1)*.32*P.face+Math.sin(t/190)*.045);g.scale(P.face,1);if(swimSheet.complete&&swimSheet.naturalWidth){const cellW=swimSheet.naturalWidth/2,cellH=swimSheet.naturalHeight/2,col=diverIndex%2,row=Math.floor(diverIndex/2);g.drawImage(swimSheet,col*cellW,row*cellH,cellW,cellH,-48,-32,96,64)}else em('🤿',0,0,32);g.restore();g.globalAlpha=1;
+ g.fillStyle='#fff';fl.forEach(f=>{g.globalAlpha=Math.min(1,f.t);em(f.s,f.x,f.y,f.s.length>3?16:24);g.globalAlpha=1});
+ g.restore();
+ const dp=clamp((P.y-SURF)/(WH-SURF),0,1),r=g.createRadialGradient(P.x-cx,P.y-cy,110,P.x-cx,P.y-cy,440);
+ r.addColorStop(0,'rgba(8,16,45,0)');r.addColorStop(1,'rgba(8,16,45,'+(dp*.55)+')');g.fillStyle=r;g.fillRect(0,0,W,H);
+ g.fillStyle='rgba(255,255,255,.85)';g.font='13px sans-serif';g.textAlign='left';g.fillText('ความลึก '+Math.max(0,Math.round((P.y-SURF)/10))+' ม. · '+['น้ำตื้น','น้ำกลาง','น้ำลึก'][zone(P.y)],10,H-10)}
+function hud(){const ms=mo2();$('hud').innerHTML='<span>🤿 '+playerName+'</span><span>🪙 '+Math.floor(S.c)+'</span><span>'+'❤️'.repeat(Math.max(0,P.hp))+'</span><span>🫧 <span class="ob"><i style="width:'+Math.max(0,P.o2/ms*100)+'%"></i></span></span><span>🎒 '+P.inv.length+'/'+cap()+'</span><span>🏴‍☠️ '+S.kills+'</span><span>🌊 สะอาด '+Math.floor(S.clean)+'%</span>'}
+const isl=["🌊","🌱","🌱🌴","🏡🌴","🏡🌳⛱️","🏘️🌳🐢","🏘️🌳🐬🐢","🏰🌳🐬🐢🌈"];
+function openPanel(m){paused=true;P.o2=mo2();pir.length=0;eb.length=0;msg=m||'';$('pn').style.display='flex';$('touchControls').style.display='none';rp()}
+function rp(){const cur=P.inv[0],pn=$('pn');
+ pn.innerHTML='<div class="card"><h3>⚓ เรือแม่ &nbsp;'+isl[Math.min(7,Math.floor(S.clean/13))]+' &nbsp;🌊 '+Math.floor(S.clean)+'% · 🪙 '+Math.floor(S.c)+'</h3><div class="ob" style="width:100%"><i style="width:'+S.clean+'%;background:#6bbf8a"></i></div>'+(S.clean>=100?'<b class="ok">🎉 ทะเลสะอาดแล้ว! เก่งมาก</b>':'')+'</div>'+
+ '<div class="card">'+(cur?'<div class="big itemBig">'+spriteMarkup(cur,90)+'</div><div style="text-align:center"><b>'+cur[1]+'</b> <span class="hint">(เหลือ '+P.inv.length+' ชิ้น)</span></div>':'<div class="hint" style="text-align:center">ไม่มีขยะให้แยก ดำน้ำลงไปหาเพิ่มนะ 🤿</div>')+'<div id="mm" style="min-height:34px;margin:6px 0">'+msg+'</div><div class="bins">'+B.map((b,i)=>'<button '+(cur?'':'disabled')+' data-b="'+i+'">'+b[0]+'<small>'+b[1]+'</small></button>').join('')+'</div></div>'+
+ '<div class="card"><b>🛒 ร้านอัปเกรด</b><div class="shop">'+Object.keys(UP).map(k=>'<button data-u="'+k+'" '+(S.c<cost(k)||(k==='heart'&&P.hp>=mhp())?'disabled':'')+'>'+UP[k][0]+(k==='heart'?'':' Lv.'+U[k])+'<small>'+UP[k][1]+'</small>🪙'+cost(k)+'</button>').join('')+'</div></div>'+
+ '<details class="card"><summary>📖 สมุดสะสมความรู้ ('+dex.size+'/'+I.length+')</summary>'+([...dex].map(n=>{const d=I.find(x=>x[1]===n);return'<div>'+d[0]+' '+d[1]+' → '+B[d[2]][0]+'</div>'}).join('')||'ยังว่าง')+'</details>'+
+  '<details class="card"><summary>📚 คลังตัวอย่างพอลิเมอร์ในชีวิตประจำวัน (ม.3)</summary>'+B.map((b,i)=>'<div style="margin:6px 0"><b>'+b[0]+'</b><br>'+I.filter(d=>d[2]===i).map(d=>d[0]+' '+d[1]+' — '+d[3]).join('<br>')+'</div>').join('')+'<small>อ้างอิง: <a href="https://proj14.ipst.ac.th/m3/m3-sci-book2/sci-m3b2-008/" target="_blank">Project 14 สสวท. ม.3</a> · <a href="https://www.scimath.org/component/flexicontent/download/2821/13063/88" target="_blank">ใบความรู้สมบัติผลิตภัณฑ์พอลิเมอร์</a></small></details>'+ 
+
+  '<button class="go" id="go">🤿 ดำน้ำต่อ</button>';
+ if(S.clean>=100&&!won){won=true;const done=document.createElement('div');done.className='card finish';done.innerHTML='<h2>🎉 ทะเลสะอาดครบ 100%!</h2><div>ภารกิจสำเร็จแล้ว '+playerName+' เก่งมาก!</div><p>เลือกดาวน์โหลดสรุปเป็น PNG เพื่อส่งให้ครู หรือเล่นสำรวจต่อได้เลย</p><div class="finishActions"><button class="reportBtn" id="summaryPng">🖼️ ดาวน์โหลดสรุป PNG</button><button id="playMore">🐠 เล่นต่อก่อน</button></div>';
+  pn.prepend(done);$('summaryPng').onclick=downloadSummaryPNG;$('playMore').onclick=()=>{pn.style.display='none';paused=false;$('touchControls').style.display='flex';P.y=SURF+60;P.surf=1;last=performance.now()}}
+ pn.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>sortTo(+b.dataset.b));
+ pn.querySelectorAll('[data-u]').forEach(b=>b.onclick=()=>{const k=b.dataset.u,c=cost(k);if(S.c>=c&&(k!=='heart'||P.hp<mhp())){S.c-=c;U[k]++;if(k=='armor')P.hp=Math.min(mhp(),P.hp+1);if(k=='heart')P.hp=Math.min(mhp(),P.hp+1);if(k=='o2')P.o2=mo2();rp()}});
+ $('go').onclick=()=>{pn.style.display='none';paused=false;$('touchControls').style.display='flex';P.y=SURF+60;P.surf=1;last=performance.now()}}
+function downloadSummaryPNG(){const c=document.createElement('canvas');c.width=1400;c.height=1000;const x=c.getContext('2d'),grad=x.createLinearGradient(0,0,1400,1000);grad.addColorStop(0,'#0c668d');grad.addColorStop(1,'#153b71');x.fillStyle=grad;x.fillRect(0,0,c.width,c.height);x.fillStyle='rgba(255,255,255,.1)';for(let i=0;i<18;i++){x.beginPath();x.arc((i*173)%1400,(i*97)%1000,18+(i%4)*10,0,Math.PI*2);x.fill()}x.fillStyle='#fff4b0';x.textAlign='center';x.font='bold 54px sans-serif';x.fillText('ภารกิจพิทักษ์ทะเลสำเร็จ!',700,125);x.fillStyle='#ffffff';x.font='bold 36px sans-serif';x.fillText('สรุปผลการเรียนรู้เรื่องพอลิเมอร์',700,190);x.textAlign='left';x.font='30px sans-serif';x.fillText('นักดำน้ำ: '+playerName,130,285);x.fillText('วันที่: '+new Date().toLocaleDateString('th-TH'),780,285);x.font='bold 34px sans-serif';x.fillStyle='#a8f4d1';x.fillText('ความสะอาดทะเล 100%',130,390);x.fillStyle='#fff';x.font='28px sans-serif';x.fillText('รายการที่แยกถูกต้อง: '+dex.size+' / '+I.length,130,455);x.fillText('โจรสลัดและฉลามที่จัดการ: '+S.kills,780,455);x.fillText('เหรียญสะสม: '+Math.floor(S.c),130,515);x.font='bold 30px sans-serif';x.fillStyle='#ffe58a';x.fillText('ตัวอย่างที่จำแนกได้',130,610);B.forEach((b,i)=>{const n=[...dex].filter(name=>{const item=I.find(d=>d[1]===name);return item&&item[2]===i}).length;x.fillStyle='#fff';x.font='25px sans-serif';x.fillText(b[0]+'  '+n+' รายการ',150+(i%2)*570,680+Math.floor(i/2)*65)});x.fillStyle='#dbf5ff';x.font='22px sans-serif';x.fillText('ฝึกสังเกตสมบัติและการใช้ประโยชน์ของพอลิเมอร์จากสิ่งของในชีวิตประจำวัน',700,865);x.fillText('อ้างอิงเนื้อหา: สสวท. Project 14 วิทยาศาสตร์ ม.3',700,920);const a=document.createElement('a');a.download='Abyss-Protectors-Polymer-Summary.png';a.href=c.toDataURL('image/png');a.click()}
+function sortTo(i){const d=P.inv.shift();if(!d)return;
+ if(d[2]===i){sfx('sort');S.c+=12;S.clean=Math.min(100,S.clean+1.6);dex.add(d[1]);msg='<span class="ok">✨ ถูกต้อง! +12🪙 '+d[1]+': '+d[3]+'</span>'}
+ else msg='<span class="no">🥺 ยังไม่ใช่ '+d[1]+' อยู่ถัง "'+B[d[2]][0]+'" เพราะ '+d[3]+'</span>';rp()}
+onkeydown=e=>{const k=e.key.toLowerCase();keys[k]=1;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k)&&!paused)e.preventDefault()};onkeyup=e=>keys[e.key.toLowerCase()]=0;
+function mp(e){const r=cv.getBoundingClientRect(),cx=clamp(P.x-W/2,0,WW-W),cy=clamp(P.y-H/2,0,WH-H);mouse={x:(e.clientX-r.left)/r.width*W+cx,y:(e.clientY-r.top)/r.height*H+cy}}
+cv.onmousedown=e=>{md=true;mp(e)};cv.onmousemove=e=>{if(md)mp(e)};onmouseup=()=>md=false;
+const joy=$('joyBase'),knob=$('joyKnob');let joyPointer=null;
+function joyMove(e){const r=joy.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),lim=r.width*.34,d=Math.hypot(dx,dy)||1,m=Math.min(1,lim/d);tj={x:dx*m/lim,y:dy*m/lim};knob.style.transform='translate('+dx*m+'px,'+dy*m+'px)'}
+function joyEnd(e){if(joyPointer!==e.pointerId)return;joyPointer=null;tj=null;knob.style.transform='translate(0,0)'}
+joy.onpointerdown=e=>{e.preventDefault();e.stopPropagation();joyPointer=e.pointerId;joy.setPointerCapture(e.pointerId);joyMove(e)};joy.onpointermove=e=>{if(e.pointerId===joyPointer)joyMove(e)};joy.onpointerup=joy.onpointercancel=joyEnd;
+const fireButton=$('fireButton');fireButton.onpointerdown=e=>{e.preventDefault();e.stopPropagation();tf=true;fireButton.setPointerCapture(e.pointerId)};fireButton.onpointerup=fireButton.onpointercancel=e=>{e.preventDefault();tf=false};
+setInterval(()=>{if(U.crew)S.c+=U.crew*1.5},1000);
+function loop(n){const dt=Math.min(.05,(n-last)/1000||0);last=n;if(!paused)upd(dt);draw(n);hudT-=dt;if(hudT<=0){hud();hudT=.15}requestAnimationFrame(loop)}
+document.querySelectorAll('.charpick').forEach(b=>b.onclick=()=>{document.querySelectorAll('.charpick').forEach(x=>x.classList.remove('active'));b.classList.add('active');diverIndex=+b.dataset.character});
+$('musicToggle').onclick=$('coverMusic').onclick=()=>{audio();toggleMusic()};$('sfxToggle').onclick=$('coverSfx').onclick=()=>{audio();toggleSfx()};
+$('startGame').onclick=()=>{audio();$('cover').style.display='none';if(hasStarted){playerName=$('playerName').value.trim().replace(/[<>&]/g,String.fromCharCode(32)).slice(0,16)||playerName;paused=false;$('touchControls').style.display='flex';last=performance.now();return}hasStarted=true;playerName=$('playerName').value.trim().replace(/[<>&]/g,String.fromCharCode(32)).slice(0,16)||'นักดำน้ำ';$('startGame').textContent='กลับเข้าเกม　▶';sfx('start');if(musicOn)startMusic();openPanel('ยินดีต้อนรับ '+playerName+'! ดำน้ำลงไปเก็บขยะ ระวังโจรสลัดใต้น้ำ ยิงมันเพื่อหาเงินนะ 🏴‍☠️')};
+$('homeBtn').onclick=()=>{paused=true;$('touchControls').style.display='none';$('pn').style.display='none';$('cover').style.display='flex';$('startGame').textContent=hasStarted?'กลับเข้าเกม　▶':'เริ่มภารกิจดำน้ำ　▶'};
+syncSoundButtons();requestAnimationFrame(loop);
+</script></body></html>
+
+
+
+
+
+
